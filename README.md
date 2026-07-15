@@ -62,4 +62,75 @@ Answer briefly (2–3 sentences each):
 
 ---
 
-Would you like me to also provide a **model solution** (full working code) so you can compare student submissions against it, or would you rather keep that hidden for now since this is meant to be an assessment?
+```mermaid
+classDiagram
+    class Payment {
+        <<abstract>>
+        -int transactionCounter
+        +authorize(double amount) boolean
+        +processPayment(double amount) void*
+        +generateReceipt() String*
+        #validateAccountDetails() boolean
+        #generateTransactionId() String
+    }
+
+    class Refundable {
+        <<interface>>
+        +refund(double amount) boolean
+    }
+
+    class RecurringBillable {
+        <<interface>>
+        +setupRecurringBilling(int intervalDays) void
+        +cancelRecurringBilling() void
+    }
+
+    class LoyaltyPointsEarner {
+        <<interface>>
+        +calculateLoyaltyPoints(double amount) int
+    }
+
+    class CreditCardPayment {
+        +processPayment(double amount) void
+        +generateReceipt() String
+        +refund(double amount) boolean
+        +setupRecurringBilling(int intervalDays) void
+        +cancelRecurringBilling() void
+        +calculateLoyaltyPoints(double amount) int
+    }
+
+    class PayPalPayment {
+        +processPayment(double amount) void
+        +generateReceipt() String
+        +refund(double amount) boolean
+        +setupRecurringBilling(int intervalDays) void
+        +cancelRecurringBilling() void
+        +calculateLoyaltyPoints(double amount) int
+    }
+
+    class BankTransferPayment {
+        +processPayment(double amount) void
+        +generateReceipt() String
+    }
+
+    class CryptoPayment {
+        +processPayment(double amount) void
+        +generateReceipt() String
+        +calculateLoyaltyPoints(double amount) int
+    }
+
+    Payment <|-- CreditCardPayment
+    Payment <|-- PayPalPayment
+    Payment <|-- BankTransferPayment
+    Payment <|-- CryptoPayment
+
+    Refundable <|.. CreditCardPayment
+    Refundable <|.. PayPalPayment
+
+    RecurringBillable <|.. CreditCardPayment
+    RecurringBillable <|.. PayPalPayment
+
+    LoyaltyPointsEarner <|.. CreditCardPayment
+    LoyaltyPointsEarner <|.. PayPalPayment
+    LoyaltyPointsEarner <|.. CryptoPayment
+```
